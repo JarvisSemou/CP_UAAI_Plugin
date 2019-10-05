@@ -1,4 +1,4 @@
-@echo on
+@echo off
 @rem 普华证书导入插件
 @rem 当前插件注册在如下生命周期里：onCoreStart
 @rem 功能：
