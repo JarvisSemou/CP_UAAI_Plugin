@@ -81,3 +81,5 @@ goto eof
 	)
 	:opt_l_1
 goto eof
+
+:eof
