@@ -21,14 +21,15 @@ goto eof
 		echo 开始执行微信后缀修复
 		for %%t in (.\app\*.1) do (
 			echo 正在修复 "%%~fnxt" 文件
-			if not exist "%%~fnxt" (
-				rename "%%~fnxt" "%%~nt.apk"
-				echo 已将 "%%~fnxt" 修复为 "%%~nt.apk"
+			if not exist "%%~dpnt" (
+				rename "%%~fnxt" "%%~nt"
+				echo 已将 "%%~fnxt" 修复为 "%%~nt"
 			) else (
-				echo "%%~nt.apk" 文件已存在，未将 "%%~fnxt" 修复为 "%%~nt.apk"
+				echo "%%~nt" 文件已存在，未将 "%%~fnxt" 修复为 "%%~nt"
 			)
 		)
 	)
+	pause
 goto eof
 
 :eof
