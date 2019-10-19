@@ -29,7 +29,6 @@ goto eof
 			)
 		)
 	)
-	pause
 goto eof
 
 :eof
