@@ -1,12 +1,20 @@
 @echo off
+@rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@rem ::	version: v0.0.3													::
+@rem ::	author: Mouse.JiangWei											::
+@rem ::	date: 2020.5.12													::
+@rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem 插件名称：普华证书导入插件
-@rem 插件版本：0.0.2
-@rem 生命周期当前插件注册在如下生命周期里：onCoreStart
+@rem 插件版本：0.0.3
+@rem 生命周期：当前插件注册在如下生命周期里：onCoreStart
 @rem 插件功能：
 @rem 	1、控制是否清除普华客户端的软件数据
 @rem	2、是否导入新证书。证书的默认导入方式为导入同一张证书；
 @rem 		另一种为导入方式为逐一导入当前目录下的 ceitsas 目录下的证书，并删除已导入的证书
 @rem	3、控制是否在安装新普华客户端前卸载旧普华客户端
+@rem ---------------------------------------------------------------------
+@rem 注：以后将使用传输号代替序列号识别不同设备
+@rem ---------------------------------------------------------------------
 if "%~n2"=="" ( 
 	setlocal enabledelayedexpansion
 	goto opt
@@ -14,9 +22,13 @@ if "%~n2"=="" (
 if "%~n2"=="opt" goto opt
 goto eof
 
-@rem return void
-@rem param_3 周期名字
-@rem param_4 序列号
+@rem 生命周期回调接口
+@rem
+@rem return boolean
+@rem param_3 string 周期名字
+@rem param_4 string 序列号
+@rem param_5 int	传输号
+@rem param_6 string 文件的绝对路径
 :opt 
 	@rem 包名列表 -------------------------------
 	@rem com.sgit.vpn
@@ -43,16 +55,16 @@ goto eof
 	@rem 这里开始写正式插件代码
 	if "%~3"=="onCoreStart" (
 		if "!UNINSTALL_OLD_WHEN_INSTALL_NEW!"=="true" (
-			adb.exe -s %~4 uninstall !OLD_PUHUA_VPN_PACKAGE!
+			adb.exe -t %~5 uninstall !OLD_PUHUA_VPN_PACKAGE!
 		)
 		if "!CLEAN_PUHUA_VPN_DATA!"=="true" (
-			adb.exe -s %~4 shell pm clear !OLD_PUHUA_VPN_PACKAGE!
+			adb.exe -t %~5 shell pm clear !OLD_PUHUA_VPN_PACKAGE!
 		)
 		if "!INSTALL_PUHUA_CEITSA!"=="true" (
 			if exist "!PUHUA_CEITSA_FLODER!" (
 				if exist "!PUHUA_CEITSA_FLODER!\*.conf" (
-					adb.exe -s %~4 shell rm -rf /sdcard/ceitsa
-					adb.exe -s %~4 shell mkdir /sdcard/ceitsa
+					adb.exe -t %~5 shell rm -rf /sdcard/ceitsa
+					adb.exe -t %~5 shell mkdir /sdcard/ceitsa
 					if "!INSTALL_PUHUA_CEITSA_MODE!"=="NOT_REPEAT" (
 						if not exist "!PUHUA_CEITSA_TMP_FLODER!" (
 							md !PUHUA_CEITSA_TMP_FLODER!
@@ -60,14 +72,14 @@ goto eof
 						for %%t in (!PUHUA_CEITSA_FLODER!\*.conf) do (
 							echo 开始导入证书：%%t
 							move %%t !PUHUA_CEITSA_TMP_FLODER!\%%~nxt
-							adb.exe -s %~4 push "!PUHUA_CEITSA_TMP_FLODER!\%%~nxt" /sdcard/ceitsa/%%~nxt
+							adb.exe -t %~5 push "!PUHUA_CEITSA_TMP_FLODER!\%%~nxt" /sdcard/ceitsa/%%~nxt
 							del /f /q "!PUHUA_CEITSA_TMP_FLODER!\%%~nxt"
 							goto opt_l_1
 						)
 					) else (
 						for %%t in (!PUHUA_CEITSA_FLODER!\*.conf) do (
 							echo 开始导入证书：%%t
-							adb.exe -s %~4 push "!PUHUA_CEITSA_FLODER!\%%~nxt" /sdcard/ceitsa/%%~nxt
+							adb.exe -t %~5 push "!PUHUA_CEITSA_FLODER!\%%~nxt" /sdcard/ceitsa/%%~nxt
 							goto opt_l_1
 						)
 					)
