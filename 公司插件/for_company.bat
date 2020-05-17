@@ -1,8 +1,8 @@
 @echo off
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem ::	version: v0.0.3													::
+@rem ::	version: v0.0.4													::
 @rem ::	author: Mouse.JiangWei											::
-@rem ::	date: 2020.5.12													::
+@rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem 插件名称：公司插件
 @rem 插件版本：0.0.1
@@ -12,10 +12,7 @@
 @rem ---------------------------------------------------------------------
 @rem 注：以后将使用传输号代替序列号识别不同设备
 @rem ---------------------------------------------------------------------
-if "%~n2"=="" ( 
-	setlocal enabledelayedexpansion
-	goto opt
-)
+if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
 goto eof
 

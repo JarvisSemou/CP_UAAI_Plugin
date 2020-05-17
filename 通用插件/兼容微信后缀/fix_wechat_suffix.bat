@@ -1,8 +1,8 @@
 @echo off
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem ::	version: v0.0.3													::
+@rem ::	version: v0.0.4													::
 @rem ::	author: Mouse.JiangWei											::
-@rem ::	date: 2020.5.12													::
+@rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem 插件名称：修复微信后缀
 @rem 插件版本：0.0.2
@@ -12,10 +12,7 @@
 @rem 插件功能：
 @rem 	1、此插件将修改 apk 目录下 .1 后缀的文件为 .apk 后缀，即使原本的文件不是 apk 文件
 @rem
-if "%~n2"=="" ( 
-	setlocal enabledelayedexpansion
-	goto opt
-)
+if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
 goto eof
 
