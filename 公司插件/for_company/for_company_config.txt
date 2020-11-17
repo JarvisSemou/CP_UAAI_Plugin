@@ -1,0 +1,8 @@
+# 执行完公司插件逻辑后，是否重启。true 为重启，false 为不重启，默认为 true
+isReboot=true
+
+# 是否先启动服务。true 为先启动服务，false 为先启动 Activity ，默认为 true
+isRunServiceFirst=true
+
+#等待 Activity 和 Service 启动的时间，等待超时之后再继续执行脚本，时间单位为秒,默认为 2 秒
+waitForSecond=2

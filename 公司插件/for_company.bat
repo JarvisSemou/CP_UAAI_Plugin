@@ -4,29 +4,71 @@
 @rem ::	author: Mouse.JiangWei											::
 @rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem æ’ä»¶åç§°ï¼šå…¬å¸æ’ä»¶
-@rem æ’ä»¶ç‰ˆæœ¬ï¼š0.0.1
-@rem ç”Ÿå‘½å‘¨æœŸï¼šonPushFileCompletedã€onCoreLogicFinish
-@rem æ’ä»¶åŠŸèƒ½ï¼š
-@rem 	1ã€å°†éƒ¨åˆ†ä¸è®¾å¤‡ç›¸å…³çš„ä¿¡æ¯å¯¼å…¥è®¾å¤‡
+@rem ²å¼şÃû³Æ£º¹«Ë¾²å¼ş
+@rem ²å¼ş°æ±¾£º0.0.2
+@rem ÉúÃüÖÜÆÚ£ºonScriptFirstStart¡¢onCoreStart¡¢onPushFileCompleted¡¢onCoreLogicFinish
+@rem ²å¼ş¹¦ÄÜ£º
+@rem 	1¡¢½«²¿·ÖÓëÉè±¸Ïà¹ØµÄĞÅÏ¢µ¼ÈëÉè±¸
+@rem    2¡¢¸ù¾İÅäÖÃÁĞ±í£¨.\for_company\for_company_component_list.txt£©Æô¶¯°²×¿×é¼ş
+@rem        »òĞ¶ÔØÈí¼ş
+@rem    3¡¢¸ù¾İÅäÖÃÎÄ¼ş£¨.\for_company\for_company_config.txt£©ÅĞ¶ÏÊÇ·ñĞèÒªÖØÆôÉè±¸£¬
+@rem        Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚÔòĞÂ½¨£¬Ä¬ÈÏÉèÖÃÎªÖØÆôÉè±¸
 @rem ---------------------------------------------------------------------
-@rem æ³¨ï¼šä»¥åå°†ä½¿ç”¨ä¼ è¾“å·ä»£æ›¿åºåˆ—å·è¯†åˆ«ä¸åŒè®¾å¤‡
+@rem ×¢£ºÒÔºó½«Ê¹ÓÃ´«ÊäºÅ´úÌæĞòÁĞºÅÊ¶±ğ²»Í¬Éè±¸
 @rem ---------------------------------------------------------------------
 if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
+if "%~2"=="createNewComponentListFile" goto createNewComponentListFile
+if "%~2"=="createNewConfigFile" goto createNewConfigFile
+if "%~2"=="for_company_init_config" goto for_company_init_config
+if "%~2"=="for_company_init_component_list" goto for_company_init_component_list
+if "%~2"=="startService" goto startService
+if "%~2"=="startActivity" goto startActivity
+if "%~2"=="uninstallApp" goto uninstallApp
 goto eof
 
-@rem ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£
+@rem ÉúÃüÖÜÆÚ»Øµ÷½Ó¿Ú
 @rem
 @rem return boolean
-@rem param_3 string å‘¨æœŸåå­—
-@rem param_4 string åºåˆ—å·
-@rem param_5 int	ä¼ è¾“å·
-@rem param_6 string æ–‡ä»¶çš„ç»å¯¹è·¯å¾„
+@rem param_3 string ÖÜÆÚÃû×Ö
+@rem param_4 string ĞòÁĞºÅ
+@rem param_5 int	´«ÊäºÅ
+@rem param_6 string ÎÄ¼şµÄ¾ø¶ÔÂ·¾¶
 :opt 
+    if "%~3"=="onScriptFirstStart" (
+        @rem ÊÇ·ñÔÚÖ´ĞĞÍêÂß¼­ºóÖØÆô¡£true ÎªÒªÖØÆô£¬false ·´Ö®£¬Ä¬ÈÏÎª true
+        set for_company_isReboot=true
+        @rem ÊÇ·ñÏÈÆô¶¯ service ÔÙÆô¶¯ activity¡£true ÎªÏÈÆô¶¯·şÎñ£¬false ·´Ö®£¬Ä¬ÈÏÎª true
+        set for_company_isRunServiceFirst=true
+        @rem µÈ´ı Activity ºÍ Service Æô¶¯µÄÊ±¼ä£¬µÈ´ı³¬Ê±Ö®ºóÔÙ¼ÌĞøÖ´ĞĞ½Å±¾£¬Ê±¼äµ¥Î»ÎªÃë,Ä¬ÈÏÎª 2 Ãë
+        set for_company_waitForSecond=2
+        @rem ÒªÆô¶¯µÄ activity ÁĞ±í
+        set for_company_activities_list=null
+        @rem ÒªÆô¶¯µÄ service ÁĞ±í
+        set for_company_services_list=null
+        @rem ÒªĞ¶ÔØµÄ app ÁĞ±í
+        set for_company_uninstall_list=null
+        @rem ÔÚÕâÀï½âÎöÅäÖÃÎÄ¼ş£¬Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚÔòĞÂ½¨ÅäÖÃÎÄ¼ş
+        if not exist "%~dp0for_company" mkdir %~dp0for_company
+        if not exist "%~dp0for_company\for_company_config.txt" call "%~f0" boolean createNewConfigFile
+        if not exist "%~dp0for_company\for_company_component_list.txt" call "%~f0" boolean createNewComponentListFile
+        call "%~f0" boolean for_company_init_config
+        if "!boolean!"=="false" (
+            echo ¶ÁÈ¡ÅäÖÃÎÄ¼ş .\for_company\for_company_config.txt Ê§°Ü£¬½«Ê¹ÓÃÄ¬ÈÏÖµ
+        )
+        call "%~f0" boolean for_company_init_component_list
+        if "!boolean!"=="false" (
+            echo ½âÎöÅäÖÃÎÄ¼ş .\for_company\for_company_component_list.txt Ê§°Ü
+        )
+    )
+    if "%~3"=="onCoreStart" (
+        @rem Ğ¶ÔØ·şÎñ
+        adb.exe -t %~5 uninstall com.thinta.ZZMinTechService
+        call %~nx0 void uninstall "%~5"
+    )
 	if "%~3"=="onPushFileCompleted" (
         if exist ".\files\Deviceinfo-enc" (
-            @rem æ¨é€è®¾å¤‡ä¿¡æ¯åˆ°è®¾å¤‡
+            @rem ÍÆËÍÉè±¸ĞÅÏ¢µ½Éè±¸
             adb.exe -t %~5 shell mkdir /sdcard/Android/data/com.thinta.ZZMinTechService
             adb.exe -t %~5 shell mkdir /sdcard/Android/data/com.thinta.ZZMinTechService/cache
             adb.exe -t %~5 push .\files\Deviceinfo-enc  /sdcard/Android/data/com.thinta.ZZMinTechService/cache/Deviceinfo-enc
@@ -34,10 +76,197 @@ goto eof
         )
     )
     if "%~3"=="onCoreLogicFinish" (
-        @rem åœ¨è¿™é‡Œé…ç½®å¯åŠ¨é¡¹
+        @rem Æô¶¯ service ºÍ activity
+        if "!for_company_isRunServiceFirst!"=="true" (
+            call %~nx0 void startService "%~5"
+            call %~nx0 void startActivity "%~5"
+        ) else (
+            call %~nx0 void startActivity "%~5"
+            call %~nx0 void startService "%~5"
+        )
+        @rem ¸ù¾İÅäÖÃÖØÆôÉè±¸
+        if "!for_company_isReboot!"=="true" adb.exe -t %~5 reboot
+    )
+goto eof
 
-        @rem é‡å¯åº”ç”¨è®¾å¤‡ä¿¡æ¯
-        adb.exe -t %~5 shell reboot
+
+@rem ´´½¨ĞÂµÄ for_company_component_list.txt ÎÄ¼ş
+@rem 
+@rem return boolean true ±íÊ¾³É¹¦´´½¨ÎÄ¼ş£¬false ±íÊ¾´´½¨ÎÄ¼şÊ§°Ü
+:createNewComponentListFile
+    echo ###################################################################################### 1>%~dp0for_company\for_company_component_list.txt
+    echo # 1¡¢ÔÚÕâÀïĞ´Èë°²×¿×é¼şÁĞ±í£¬Èç¹ûÒªÆô¶¯ Activity Ôò½«×é¼şĞ´ÔÚ :activities ÏÂ£¬             1>>%~dp0for_company\for_company_component_list.txt
+    echo #   Èç¹ûÒªÆô¶¯ Service ÔòĞ´ÔÚ :services ÏÂ£¬ÀıÈç£º                                       1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo #   # ±íÊ¾ÒªÆô¶¯ com.android.xxx/.MainActivity Õâ¸ö Activity                            1>>%~dp0for_company\for_company_component_list.txt
+    echo #   :activities                                                                        1>>%~dp0for_company\for_company_component_list.txt
+    echo #   com.android.xxx/.MainActivity                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo #   # ±íÊ¾ÒªÆô¶¯ com.android.xxx/.SomeService Õâ¸ö Service                              1>>%~dp0for_company\for_company_component_list.txt
+    echo #   :services                                                                          1>>%~dp0for_company\for_company_component_list.txt
+    echo #   com.android.xxx/.SomeService                                                       1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo #   #±íÊ¾ÒªĞ¶ÔØ com.android.xxx Õâ¸öÓ¦ÓÃ                                                 1>>%~dp0for_company\for_company_component_list.txt
+    echo #   :uninstall                                                                         1>>%~dp0for_company\for_company_component_list.txt
+    echo #   com.android.xxx                                                                    1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo # ×¢£ºcom.android.xxx ÊÇ°üÃû£¬.MainActivity ºÍ .SomeService Ê¡ÂÔ°üÃûºóµÄ¾ßÌåµÄ°²×¿×é¼ş     1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo # 2¡¢ÕâÕâÀïÀïÃæÅäÖÃµÄ°²×¿×é¼ş½«±»°²×¿µÄ am ÃüÁîµ÷ÓÃ                                        1>>%~dp0for_company\for_company_component_list.txt
+    echo #   Activity µÄµ÷ÓÃ¸ñÊ½ÈçÏÂ£º                                                            1>>%~dp0for_company\for_company_component_list.txt
+    echo #       am  start  -n  com.android.xxx/.MainActivity                                   1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo #   Service µÄµ÷ÓÃ¸ñÊ½ÈçÏÂ£º                                                             1>>%~dp0for_company\for_company_component_list.txt
+    echo #       am  startservice  -n  com.android.xxx/.SomeService                             1>>%~dp0for_company\for_company_component_list.txt
+    echo #                                                                                      1>>%~dp0for_company\for_company_component_list.txt
+    echo ###################################################################################### 1>>%~dp0for_company\for_company_component_list.txt
+    echo :activities 1>>%~dp0for_company\for_company_component_list.txt
+    echo.>>%~dp0for_company\for_company_component_list.txt
+    echo :services 1>>%~dp0for_company\for_company_component_list.txt
+    echo.>>%~dp0for_company\for_company_component_list.txt
+    echo :uninstall 1>>%~dp0for_company\for_company_component_list.txt
+    echo.>>%~dp0for_company\for_company_component_list.txt
+    echo.>>%~dp0for_company\for_company_component_list.txt
+    set %~1=true
+goto eof
+
+@rem ´´½¨ĞÂµÄ for_company_config.txt ÎÄ¼ş
+@rem 
+@rem return boolean true ±íÊ¾³É¹¦´´½¨ÎÄ¼ş£¬false ±íÊ¾´´½¨ÎÄ¼şÊ§°Ü
+:createNewConfigFile
+    echo # Ö´ĞĞÍê¹«Ë¾²å¼şÂß¼­ºó£¬ÊÇ·ñÖØÆô¡£true ÎªÖØÆô£¬false Îª²»ÖØÆô£¬Ä¬ÈÏÎª true 1>%~dp0for_company\for_company_config.txt
+    echo isReboot=true 1>>%~dp0for_company\for_company_config.txt
+    echo.>>%~dp0for_company\for_company_config.txt
+    echo # ÊÇ·ñÏÈÆô¶¯·şÎñ¡£true ÎªÏÈÆô¶¯·şÎñ£¬false ÎªÏÈÆô¶¯ activity £¬Ä¬ÈÏÎª true 1>>%~dp0for_company\for_company_config.txt
+    echo isRunServiceFirst=true 1>>%~dp0for_company\for_company_config.txt
+    echo.>>%~dp0for_company\for_company_config.txt
+    echo #µÈ´ı Activity ºÍ Service Æô¶¯µÄÊ±¼ä£¬µÈ´ı³¬Ê±Ö®ºóÔÙ¼ÌĞøÖ´ĞĞ½Å±¾£¬Ê±¼äµ¥Î»ÎªÃë,Ä¬ÈÏÎª 2 Ãë 1>>%~dp0for_company\for_company_config.txt
+    echo waitForSecond=2 1>>%~dp0for_company\for_company_config.txt
+    set %~1=true
+goto eof
+
+@rem ½âÎö .\for_company\for_company_config.txt ÎÄ¼ş
+@rem
+@rem return boolean true ±íÊ¾³É¹¦½âÎö£¬false ±íÊ¾½âÎöÊ§°Ü
+:for_company_init_config
+    echo ÕıÔÚ½âÎö for_company_config.txt 
+    set result=false
+    for /f "eol=# tokens=1,2 delims== " %%l in (%~dp0for_company\for_company_config.txt) do (
+        @rem ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼şµÄÄÚÈİ
+        echo ÕÒµ½ÅäÖÃÏî£º%%~l£¬ÅäÖÃ½á¹û£º%%~l = %%~m
+        if "%%~l"=="isReboot" set for_company_isReboot=%%~m
+        if "%%~l"=="isRunServiceFirst" set for_company_isRunServiceFirst=%%~m
+        if "%%~l"=="waitForSecond" set for_company_waitForSecond=%%~m
+        set result=true
+    )
+    set %~1=!result!
+goto eof
+
+@rem ½âÎö .\for_company\for_company_component_list.txt ÎÄ¼ş
+@rem
+@rem return boolean true ±íÊ¾³É¹¦½âÎö£¬false ±íÊ¾½âÎöÊ§°Ü
+:for_company_init_component_list
+    echo ÕıÔÚ½âÎö  .\for_company\for_company_component_list.txt
+    set tmp_string_1=null
+    set tmp_string_2=null
+    set result=false
+    for /f "eol=#" %%l in (%~dp0for_company\for_company_component_list.txt) do (
+        @rem ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼şµÄÄÚÈİ
+        set tmp_string_1=%%~l
+        set tmp_string_3=!tmp_string_1:~0,1!
+        if "!tmp_string_3!"==":" (
+            @rem ±êÇ©ĞĞ
+            set result=false
+            set tmp_string_2=!tmp_string_1:~1!
+            echo ½âÎöµ½ÅäÖÃ±êÇ© !tmp_string_2!
+            if "!tmp_string_2!"=="activities" set result=true
+            if "!tmp_string_2!"=="services" set result=true
+            if "!tmp_string_2!"=="uninstall" set result=true
+            if "!result!"=="false" (
+                echo .
+                echo ½âÎöµ½´íÎóµÄÅäÖÃ±êÇ© !tmp_string_1!
+                echo Çë¼ì²éÅäÖÃÎÄ¼ş .\for_company\for_company_component_list.txt
+                echo .
+                echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                goto for_company_init_component_list_1
+            )
+        ) else (
+            @rem ÅäÖÃĞĞ
+            if "!tmp_string_1!" neq "" (
+                if "!tmp_string_2!" neq "null" (
+                    if "!tmp_string_2!"=="activities" (
+                        @rem ÒªÆô¶¯µÄÊÇ activity
+                        if "!for_company_activities_list!" neq "null" (
+                            set for_company_activities_list=!for_company_activities_list!,"!tmp_string_1!"
+                        ) else (
+                            set for_company_activities_list="!tmp_string_1!"
+                        )
+                    )
+                    if "!tmp_string_2!"=="services" (
+                        @rem ÒªÆô¶¯µÄÊÇ service
+                        if "!for_company_services_list!" neq "null" (
+                            set for_company_services_list=!for_company_services_list!,"!tmp_string_1!"
+                        ) else (
+                            set for_company_services_list="!tmp_string_1!"
+                        )
+                    )
+                    if "!tmp_string_2!"=="uninstall" (
+                        @rem ÒªÆô¶¯µÄÊÇ service
+                        if "!for_company_uninstall_list!" neq "null" (
+                            set for_company_uninstall_list=!for_company_uninstall_list!,"!tmp_string_1!"
+                        ) else (
+                            set for_company_uninstall_list="!tmp_string_1!"
+                        )
+                    )
+                    set result=true
+                ) else (
+                    set result=false
+                    echo ¼ì²âµ½ !tmp_string_2! Î´ÅäÖÃÔÚ activities »ò services »ò uninstall ±êÇ©ÏÂ£¬
+                    echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                    goto for_company_init_component_list_1
+                )
+            )
+        )
+    )
+    :for_company_init_component_list_1
+    set %~1=!result!
+goto eof
+
+@rem Æô¶¯ÅäÖÃµÄ activity
+@rem
+@rem param_3 ´«ÊäºÅ
+@rem return void
+:startActivity
+    if "!for_company_activities_list!" neq "null" (
+        for %%c in (!for_company_activities_list!) do (
+            adb.exe -t %~3 shell am start -n %%~c
+            choice /d y /t !for_company_waitForSecond! /n 1>nul
+        )
+    )
+goto eof
+
+@rem Æô¶¯ÅäÖÃµÄ service
+@rem
+@rem param_3 ´«ÊäºÅ
+@rem return void
+:startService
+    if "!for_company_services_list!" neq "null" (
+        for %%c in (!for_company_services_list!) do (
+            adb.exe -t %~3 shell am startservice -n %%~c
+            choice /d y /t !for_company_waitForSecond! /n 1>nul
+        )
+    )
+goto eof
+
+@rem Ğ¶ÔØÅäÖÃµÄ app
+@rem
+@rem param_3 ´«ÊäºÅ
+@rem return void
+:uninstallApp
+    if "!for_company_uninstall_list!" neq "null" (
+        for %%p in (!for_company_uninstall_list!) do (
+            adb.exe -t %~3 uninstall %%~p
+        )
     )
 goto eof
 
