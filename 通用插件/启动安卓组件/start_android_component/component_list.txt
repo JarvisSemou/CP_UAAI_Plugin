@@ -1,0 +1,25 @@
+######################################################################################
+# 1、在这里写入安卓组件列表，如果要启动 Activity 则将组件写在 :activities 下，
+#   如果要启动 Service 则写在 :services 下，例如：
+#
+#   # 表示要启动 com.android.xxx/.MainActivity 这个 Activity
+#   :activities
+#   com.android.xxx/.MainActivity
+#   
+#   # 表示要启动 com.android.xxx/.SomeService 这个 Service
+#   :services
+#   com.android.xxx/.SomeService
+#
+# 注：com.android.xxx 是包名，.MainActivity 和 .SomeService 省略包名后的具体的安卓组件
+#
+# 2、这这里里面配置的安卓组件将被安卓的 am 命令调用
+#   Activity 的调用格式如下：
+#       am  start  -n  com.android.xxx/.MainActivity
+#   
+#   Service 的调用格式如下：
+#       am  startservice  -n  com.android.xxx/.SomeService
+#
+######################################################################################
+:activities
+
+:services
