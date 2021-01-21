@@ -1,18 +1,19 @@
 @echo off
+chcp 65001 1>nul
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem ::	version: v0.0.4													::
 @rem ::	author: Mouse.JiangWei											::
 @rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem ²å¼şÃû³Æ£ºĞ¶ÔØ°²×¿Ó¦ÓÃ
-@rem ²å¼ş°æ±¾£º0.0.1
-@rem ²å¼şÃèÊö£ºÔÚ onCoreStart ÉúÃüÖÜÆÚÆô¶¯ÌØ¶¨µÄ°²×¿×é¼ş
-@rem ÉúÃüÖÜÆÚ£ºonScriptFirstStart¡¢onCoreStart
-@rem ²å¼ş¹¦ÄÜ£º
-@rem	1¡¢¸ù¾İÅäÖÃÎÄ¼ş£¨.\uninstall_android_application\package_list.txt£©
-@rem        Ğ¶ÔØÏàÓ¦°²×¿Ó¦ÓÃ³ÌĞò£¬Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚ½«Éú³ÉÒ»¸ö
+@rem æ’ä»¶åç§°ï¼šå¸è½½å®‰å“åº”ç”¨
+@rem æ’ä»¶ç‰ˆæœ¬ï¼š0.0.1
+@rem æ’ä»¶æè¿°ï¼šåœ¨ onCoreStart ç”Ÿå‘½å‘¨æœŸå¯åŠ¨ç‰¹å®šçš„å®‰å“ç»„ä»¶
+@rem ç”Ÿå‘½å‘¨æœŸï¼šonScriptFirstStartã€onCoreStart
+@rem æ’ä»¶åŠŸèƒ½ï¼š
+@rem	1ã€æ ¹æ®é…ç½®æ–‡ä»¶ï¼ˆ.\uninstall_android_application\package_list.txtï¼‰
+@rem        å¸è½½ç›¸åº”å®‰å“åº”ç”¨ç¨‹åºï¼Œå¦‚æœé…ç½®æ–‡ä»¶ä¸å­˜åœ¨å°†ç”Ÿæˆä¸€ä¸ª
 @rem ---------------------------------------------------------------------
-@rem ×¢£ºÒÔºó½«Ê¹ÓÃ´«ÊäºÅ´úÌæĞòÁĞºÅÊ¶±ğ²»Í¬Éè±¸
+@rem æ³¨ï¼šä»¥åå°†ä½¿ç”¨ä¼ è¾“å·ä»£æ›¿åºåˆ—å·è¯†åˆ«ä¸åŒè®¾å¤‡
 @rem ---------------------------------------------------------------------
 if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
@@ -21,44 +22,44 @@ if "%~2"=="init_package_list" goto init_package_list
 if "%~2"=="unstallApp" goto uninstallApp
 goto eof
 
-@rem ÉúÃüÖÜÆÚ»Øµ÷½Ó¿Ú
+@rem ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£
 @rem
 @rem return boolean
-@rem param_3 string ÖÜÆÚÃû×Ö
-@rem param_4 string ĞòÁĞºÅ
-@rem param_5 int	´«ÊäºÅ
-@rem param_6 string ÎÄ¼şµÄ¾ø¶ÔÂ·¾¶
+@rem param_3 string å‘¨æœŸåå­—
+@rem param_4 string åºåˆ—å·
+@rem param_5 int	ä¼ è¾“å·
+@rem param_6 string æ–‡ä»¶çš„ç»å¯¹è·¯å¾„
 :opt 
     if "%~3"=="onScriptFirstStart" (
-        @rem ÒªĞ¶ÔØµÄ°²×¿Ó¦ÓÃ
+        @rem è¦å¸è½½çš„å®‰å“åº”ç”¨
         set uninstall_android_application_uninstall_list=null
-        @rem ÔÚÕâÀï½âÎöÅäÖÃÎÄ¼ş£¬Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚÔòĞÂ½¨ÅäÖÃÎÄ¼ş
+        @rem åœ¨è¿™é‡Œè§£æé…ç½®æ–‡ä»¶ï¼Œå¦‚æœé…ç½®æ–‡ä»¶ä¸å­˜åœ¨åˆ™æ–°å»ºé…ç½®æ–‡ä»¶
         if not exist "%~dp0uninstall_android_application" mkdir %~dp0uninstall_android_application
         if not exist "%~dp0uninstall_android_application\package_list.txt" call "%~f0" boolean createNewPackageListFile
         call "%~f0" boolean init_package_list
         if "!boolean!"=="false" (
-            echo ½âÎöÅäÖÃÎÄ¼ş .\uninstall_android_application\package_list.txt Ê§°Ü
+            echo è§£æé…ç½®æ–‡ä»¶ .\uninstall_android_application\package_list.txt å¤±è´¥
         )
     )
     if "%~3"=="onCoreStart" (
-        @rem Ğ¶ÔØÓ¦ÓÃ
+        @rem å¸è½½åº”ç”¨
         call %~nx0 void unstallApp "%~5"
     )
 goto eof
 
 
-@rem ´´½¨ĞÂµÄ package_list.txt ÎÄ¼ş
+@rem åˆ›å»ºæ–°çš„ package_list.txt æ–‡ä»¶
 @rem 
-@rem return boolean true ±íÊ¾³É¹¦´´½¨ÎÄ¼ş£¬false ±íÊ¾´´½¨ÎÄ¼şÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸåˆ›å»ºæ–‡ä»¶ï¼Œfalse è¡¨ç¤ºåˆ›å»ºæ–‡ä»¶å¤±è´¥
 :createNewPackageListFile
     echo ###################################################################################### 1>%~dp0uninstall_android_application\package_list.txt
-    echo # 1¡¢ÔÚÕâÀïĞ´Èë°²×¿Ó¦ÓÃ°üÃûÁĞ±í                                                          1>%~dp0uninstall_android_application\package_list.txt
+    echo # 1ã€åœ¨è¿™é‡Œå†™å…¥å®‰å“åº”ç”¨åŒ…ååˆ—è¡¨                                                          1>%~dp0uninstall_android_application\package_list.txt
     echo #                                                                                      1>%~dp0uninstall_android_application\package_list.txt
-    echo #   #±íÊ¾ÒªĞ¶ÔØ com.android.xxx Õâ¸öÓ¦ÓÃ                                                1>%~dp0uninstall_android_application\package_list.txt
+    echo #   #è¡¨ç¤ºè¦å¸è½½ com.android.xxx è¿™ä¸ªåº”ç”¨                                                1>%~dp0uninstall_android_application\package_list.txt
     echo #   :uninstall                                                                         1>%~dp0uninstall_android_application\package_list.txt
     echo #   com.android.xxx                                                                    1>%~dp0uninstall_android_application\package_list.txt
     echo #                                                                                      1>%~dp0uninstall_android_application\package_list.txt
-    echo # ×¢£ºcom.android.xxx ÊÇ°üÃû                                                            1>%~dp0uninstall_android_application\package_list.txt
+    echo # æ³¨ï¼šcom.android.xxx æ˜¯åŒ…å                                                            1>%~dp0uninstall_android_application\package_list.txt
     echo #                                                                                      1>%~dp0uninstall_android_application\package_list.txt
     echo ###################################################################################### 1>%~dp0uninstall_android_application\package_list.txt
     echo :uninstall                                                                             1>%~dp0uninstall_android_application\package_list.txt
@@ -66,38 +67,38 @@ goto eof
     set %~1=true
 goto eof
 
-@rem ½âÎö .\uninstall_android_application\package_list.txt ÎÄ¼ş
+@rem è§£æ .\uninstall_android_application\package_list.txt æ–‡ä»¶
 @rem
-@rem return boolean true ±íÊ¾³É¹¦½âÎö£¬false ±íÊ¾½âÎöÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸè§£æï¼Œfalse è¡¨ç¤ºè§£æå¤±è´¥
 :init_package_list
-    echo ÕıÔÚ½âÎö  .\uninstall_android_application\package_list.txt
+    echo æ­£åœ¨è§£æ  .\uninstall_android_application\package_list.txt
     set tmp_string_1=null
     set tmp_string_2=null
     set result=false
     for /f "eol=#" %%l in (%~dp0uninstall_android_application\package_list.txt) do (
-        @rem ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼şµÄÄÚÈİ
+        @rem å¼€å§‹è¯»å–é…ç½®æ–‡ä»¶çš„å†…å®¹
         set tmp_string_1=%%~l
         set tmp_string_3=!tmp_string_1:~0,1!
         if "!tmp_string_3!"==":" (
-            @rem ±êÇ©ĞĞ
+            @rem æ ‡ç­¾è¡Œ
             set result=false
             set tmp_string_2=!tmp_string_1:~1!
-            echo ½âÎöµ½ÅäÖÃ±êÇ© !tmp_string_2!
+            echo è§£æåˆ°é…ç½®æ ‡ç­¾ !tmp_string_2!
             if "!tmp_string_2!"=="uninstall" set result=true
             if "!result!"=="false" (
                 echo .
-                echo ½âÎöµ½´íÎóµÄÅäÖÃ±êÇ© !tmp_string_1!
-                echo Çë¼ì²éÅäÖÃÎÄ¼ş .\uninstall_android_application\package_list.txt
+                echo è§£æåˆ°é”™è¯¯çš„é…ç½®æ ‡ç­¾ !tmp_string_1!
+                echo è¯·æ£€æŸ¥é…ç½®æ–‡ä»¶ .\uninstall_android_application\package_list.txt
                 echo .
-                echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                echo è„šæœ¬å°†åœæ­¢è§£æé…ç½®æ–‡ä»¶å¹¶é€€å‡º
                 goto init_package_list_1
             )
         ) else (
-            @rem ÅäÖÃĞĞ
+            @rem é…ç½®è¡Œ
             if "!tmp_string_1!" neq "" (
                 if "!tmp_string_2!" neq "null" (
                     if "!tmp_string_2!"=="uninstall" (
-                        @rem ½âÎöÒªĞ¶ÔØµÄÓ¦ÓÃ
+                        @rem è§£æè¦å¸è½½çš„åº”ç”¨
                         if "!uninstall_android_application_uninstall_list!" neq "null" (
                             set uninstall_android_application_uninstall_list=!uninstall_android_application_uninstall_list!,"!tmp_string_1!"
                         ) else (
@@ -107,8 +108,8 @@ goto eof
                     set result=true
                 ) else (
                     set result=false
-                    echo ¼ì²âµ½ !tmp_string_2! Î´ÅäÖÃÔÚ uninstall ±êÇ©ÏÂ£¬
-                    echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                    echo æ£€æµ‹åˆ° !tmp_string_2! æœªé…ç½®åœ¨ uninstall æ ‡ç­¾ä¸‹ï¼Œ
+                    echo è„šæœ¬å°†åœæ­¢è§£æé…ç½®æ–‡ä»¶å¹¶é€€å‡º
                     goto init_package_list_1
                 )
             )
@@ -118,9 +119,9 @@ goto eof
     set %~1=!result!
 goto eof
 
-@rem Ğ¶ÔØÅäÖÃµÄÓ¦ÓÃ³ÌĞò
+@rem å¸è½½é…ç½®çš„åº”ç”¨ç¨‹åº
 @rem
-@rem param_3 ´«ÊäºÅ
+@rem param_3 ä¼ è¾“å·
 @rem return void
 :startService
     if "!uninstall_android_application_uninstall_list!" neq "null" (

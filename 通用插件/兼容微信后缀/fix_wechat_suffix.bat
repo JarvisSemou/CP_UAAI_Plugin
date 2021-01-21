@@ -1,38 +1,39 @@
 @echo off
+chcp 65001 1>nul
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem ::	version: v0.0.4													::
 @rem ::	author: Mouse.JiangWei											::
 @rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem ²å¼şÃû³Æ£ºĞŞ¸´Î¢ĞÅºó×º
-@rem ²å¼ş°æ±¾£º0.0.2
-@rem ²å¼şÃèÊö£ºÒòÎªÓÃÎ¢ĞÅ´«Êä apk ÎÄ¼şÊ±£¬Î¢ĞÅ»á×Ô¶¯¼Ó .1 ºó×ºµ¼ÖÂÓ¦ÓÃÎŞ·¨±» adb °²×°£¬
-@rem µ±Ç°²å¼şÓÃÀ´½â¾öÕâ¸öÎÊÌâ.
-@rem ÉúÃüÖÜÆÚ£ºonScriptFirstStart
-@rem ²å¼ş¹¦ÄÜ£º
-@rem 	1¡¢´Ë²å¼ş½«ĞŞ¸Ä apk Ä¿Â¼ÏÂ .1 ºó×ºµÄÎÄ¼şÎª .apk ºó×º£¬¼´Ê¹Ô­±¾µÄÎÄ¼ş²»ÊÇ apk ÎÄ¼ş
+@rem æ’ä»¶åç§°ï¼šä¿®å¤å¾®ä¿¡åç¼€
+@rem æ’ä»¶ç‰ˆæœ¬ï¼š0.0.3
+@rem æ’ä»¶æè¿°ï¼šå› ä¸ºç”¨å¾®ä¿¡ä¼ è¾“ apk æ–‡ä»¶æ—¶ï¼Œå¾®ä¿¡ä¼šè‡ªåŠ¨åŠ  .1 åç¼€å¯¼è‡´åº”ç”¨æ— æ³•è¢« adb å®‰è£…ï¼Œ
+@rem å½“å‰æ’ä»¶ç”¨æ¥è§£å†³è¿™ä¸ªé—®é¢˜.
+@rem ç”Ÿå‘½å‘¨æœŸï¼šonScriptFirstStart
+@rem æ’ä»¶åŠŸèƒ½ï¼š
+@rem 	1ã€æ­¤æ’ä»¶å°†ä¿®æ”¹ apk ç›®å½•ä¸‹ .1 åç¼€çš„æ–‡ä»¶ä¸º .apk åç¼€ï¼Œå³ä½¿åŸæœ¬çš„æ–‡ä»¶ä¸æ˜¯ apk æ–‡ä»¶
 @rem
 if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
 goto eof
 
-@rem ÉúÃüÖÜÆÚ»Øµ÷½Ó¿Ú
+@rem ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£
 @rem
 @rem return boolean
-@rem param_3 string ÖÜÆÚÃû×Ö
-@rem param_4 string ĞòÁĞºÅ
-@rem param_5 int	´«ÊäºÅ
-@rem param_6 string ÎÄ¼şµÄ¾ø¶ÔÂ·¾¶
+@rem param_3 string å‘¨æœŸåå­—
+@rem param_4 string åºåˆ—å·
+@rem param_5 int	ä¼ è¾“å·
+@rem param_6 string æ–‡ä»¶çš„ç»å¯¹è·¯å¾„
 :opt 
 	if "%~3"=="onScriptFirstStart" (
-		echo ¿ªÊ¼Ö´ĞĞÎ¢ĞÅºó×ºĞŞ¸´
+		echo å¼€å§‹æ‰§è¡Œå¾®ä¿¡åç¼€ä¿®å¤
 		for %%t in (.\app\*.1) do (
-			echo ÕıÔÚĞŞ¸´ "%%~fnxt" ÎÄ¼ş
+			echo æ­£åœ¨ä¿®å¤ "%%~fnxt" æ–‡ä»¶
 			if not exist "%%~dpnt" (
 				rename "%%~fnxt" "%%~nt"
-				echo ÒÑ½« "%%~fnxt" ĞŞ¸´Îª "%%~nt"
+				echo å·²å°† "%%~fnxt" ä¿®å¤ä¸º "%%~nt"
 			) else (
-				echo "%%~nt" ÎÄ¼şÒÑ´æÔÚ£¬Î´½« "%%~fnxt" ĞŞ¸´Îª "%%~nt"
+				echo "%%~nt" æ–‡ä»¶å·²å­˜åœ¨ï¼Œæœªå°† "%%~fnxt" ä¿®å¤ä¸º "%%~nt"
 			)
 		)
 	)

@@ -1,19 +1,20 @@
 @echo off
+chcp 65001 1>nul
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @rem ::	version: v0.0.4													::
 @rem ::	author: Mouse.JiangWei											::
 @rem ::	date: 2020.5.17													::
 @rem ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@rem ²å¼şÃû³Æ£º°²×¿×é¼şÆô¶¯²å¼ş
-@rem ²å¼ş°æ±¾£º0.0.1
-@rem ²å¼şÃèÊö£ºÔÚ onCoreLogicFinish ÉúÃüÖÜÆÚÆô¶¯ÌØ¶¨µÄ°²×¿×é¼ş
-@rem ÉúÃüÖÜÆÚ£ºonScriptFirstStart¡¢onCoreLogicFinish
-@rem ²å¼ş¹¦ÄÜ£º
-@rem	1¡¢¸ù¾İÅäÖÃÎÄ¼ş£¨.\start_android_component\component_list.txt£©Æô¶¯
-@rem		ÏàÓ¦µÄ°²×¿×é¼ş£¬ÅäÖÃ·½Ê½Çë¿´ÅäÖÃÎÄ¼ş¡£Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚÔòĞÂ½¨Ò»¸ö
-@rem		ÅäÖÃÎÄ¼ş¡£
+@rem æ’ä»¶åç§°ï¼šå®‰å“ç»„ä»¶å¯åŠ¨æ’ä»¶
+@rem æ’ä»¶ç‰ˆæœ¬ï¼š0.0.2
+@rem æ’ä»¶æè¿°ï¼šåœ¨ onCoreLogicFinish ç”Ÿå‘½å‘¨æœŸå¯åŠ¨ç‰¹å®šçš„å®‰å“ç»„ä»¶
+@rem ç”Ÿå‘½å‘¨æœŸï¼šonScriptFirstStartã€onCoreLogicFinish
+@rem æ’ä»¶åŠŸèƒ½ï¼š
+@rem	1ã€æ ¹æ®é…ç½®æ–‡ä»¶ï¼ˆ.\start_android_component\component_list.txtï¼‰å¯åŠ¨
+@rem		ç›¸åº”çš„å®‰å“ç»„ä»¶ï¼Œé…ç½®æ–¹å¼è¯·çœ‹é…ç½®æ–‡ä»¶ã€‚å¦‚æœé…ç½®æ–‡ä»¶ä¸å­˜åœ¨åˆ™æ–°å»ºä¸€ä¸ª
+@rem		é…ç½®æ–‡ä»¶ã€‚
 @rem ---------------------------------------------------------------------
-@rem ×¢£ºÒÔºó½«Ê¹ÓÃ´«ÊäºÅ´úÌæĞòÁĞºÅÊ¶±ğ²»Í¬Éè±¸
+@rem æ³¨ï¼šä»¥åå°†ä½¿ç”¨ä¼ è¾“å·ä»£æ›¿åºåˆ—å·è¯†åˆ«ä¸åŒè®¾å¤‡
 @rem ---------------------------------------------------------------------
 if "!RUN_ONCE!" neq "%RUN_ONCE%" setlocal enableDelayedExpansion
 if "%~n2"=="opt" goto opt
@@ -25,38 +26,38 @@ if "%~2"=="startService" goto startService
 if "%~2"=="startActivity" goto startActivity
 goto eof
 
-@rem ÉúÃüÖÜÆÚ»Øµ÷½Ó¿Ú
+@rem ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£
 @rem
 @rem return boolean
-@rem param_3 string ÖÜÆÚÃû×Ö
-@rem param_4 string ĞòÁĞºÅ
-@rem param_5 int	´«ÊäºÅ
-@rem param_6 string ÎÄ¼şµÄ¾ø¶ÔÂ·¾¶
+@rem param_3 string å‘¨æœŸåå­—
+@rem param_4 string åºåˆ—å·
+@rem param_5 int	ä¼ è¾“å·
+@rem param_6 string æ–‡ä»¶çš„ç»å¯¹è·¯å¾„
 :opt 
     if "%~3"=="onScriptFirstStart" (
-        @rem ÊÇ·ñÏÈÆô¶¯ service ÔÙÆô¶¯ activity¡£true ÎªÏÈÆô¶¯·şÎñ£¬false ·´Ö®£¬Ä¬ÈÏÎª true
+        @rem æ˜¯å¦å…ˆå¯åŠ¨ service å†å¯åŠ¨ activityã€‚true ä¸ºå…ˆå¯åŠ¨æœåŠ¡ï¼Œfalse åä¹‹ï¼Œé»˜è®¤ä¸º true
         set start_android_component_isRunServiceFirst=true
-        @rem µÈ´ı Activity ºÍ Service Æô¶¯µÄÊ±¼ä£¬µÈ´ı³¬Ê±Ö®ºóÔÙ¼ÌĞøÖ´ĞĞ½Å±¾£¬Ê±¼äµ¥Î»ÎªÃë,Ä¬ÈÏÎª 2 Ãë
+        @rem ç­‰å¾… Activity å’Œ Service å¯åŠ¨çš„æ—¶é—´ï¼Œç­‰å¾…è¶…æ—¶ä¹‹åå†ç»§ç»­æ‰§è¡Œè„šæœ¬ï¼Œæ—¶é—´å•ä½ä¸ºç§’,é»˜è®¤ä¸º 2 ç§’
         set start_android_component_waitForSecond=2
-        @rem ÒªÆô¶¯µÄ activity ÁĞ±í
+        @rem è¦å¯åŠ¨çš„ activity åˆ—è¡¨
         set start_android_component_activities_list=null
-        @rem ÒªÆô¶¯µÄ service ÁĞ±í
+        @rem è¦å¯åŠ¨çš„ service åˆ—è¡¨
         set start_android_component_services_list=null
-        @rem ÔÚÕâÀï½âÎöÅäÖÃÎÄ¼ş£¬Èç¹ûÅäÖÃÎÄ¼ş²»´æÔÚÔòĞÂ½¨ÅäÖÃÎÄ¼ş
+        @rem åœ¨è¿™é‡Œè§£æé…ç½®æ–‡ä»¶ï¼Œå¦‚æœé…ç½®æ–‡ä»¶ä¸å­˜åœ¨åˆ™æ–°å»ºé…ç½®æ–‡ä»¶
         if not exist "%~dp0start_android_component" mkdir %~dp0start_android_component
         if not exist "%~dp0start_android_component\config.txt" call "%~f0" boolean createNewConfigFile
         if not exist "%~dp0start_android_component\component_list.txt" call "%~f0" boolean createNewComponentListFile
         call "%~f0" boolean init_config
         if "!boolean!"=="false" (
-            echo ¶ÁÈ¡ÅäÖÃÎÄ¼ş .\start_android_component\config.txt Ê§°Ü£¬½«Ê¹ÓÃÄ¬ÈÏÖµ
+            echo è¯»å–é…ç½®æ–‡ä»¶ .\start_android_component\config.txt å¤±è´¥ï¼Œå°†ä½¿ç”¨é»˜è®¤å€¼
         )
         call "%~f0" boolean init_component_list
         if "!boolean!"=="false" (
-            echo ½âÎöÅäÖÃÎÄ¼ş .\start_android_component\component_list.txt Ê§°Ü
+            echo è§£æé…ç½®æ–‡ä»¶ .\start_android_component\component_list.txt å¤±è´¥
         )
     )
     if "%~3"=="onCoreLogicFinish" (
-        @rem Æô¶¯ service ºÍ activity
+        @rem å¯åŠ¨ service å’Œ activity
         if "!start_android_component_isRunServiceFirst!"=="true" (
             call %~nx0 void startService "%~5"
             call %~nx0 void startActivity "%~5"
@@ -68,29 +69,29 @@ goto eof
 goto eof
 
 
-@rem ´´½¨ĞÂµÄ component_list.txt ÎÄ¼ş
+@rem åˆ›å»ºæ–°çš„ component_list.txt æ–‡ä»¶
 @rem 
-@rem return boolean true ±íÊ¾³É¹¦´´½¨ÎÄ¼ş£¬false ±íÊ¾´´½¨ÎÄ¼şÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸåˆ›å»ºæ–‡ä»¶ï¼Œfalse è¡¨ç¤ºåˆ›å»ºæ–‡ä»¶å¤±è´¥
 :createNewComponentListFile
     echo ###################################################################################### 1>%~dp0start_android_component\component_list.txt
-    echo # 1¡¢ÔÚÕâÀïĞ´Èë°²×¿×é¼şÁĞ±í£¬Èç¹ûÒªÆô¶¯ Activity Ôò½«×é¼şĞ´ÔÚ :activities ÏÂ£¬             1>>%~dp0start_android_component\component_list.txt
-    echo #   Èç¹ûÒªÆô¶¯ Service ÔòĞ´ÔÚ :services ÏÂ£¬ÀıÈç£º                                       1>>%~dp0start_android_component\component_list.txt
+    echo # 1ã€åœ¨è¿™é‡Œå†™å…¥å®‰å“ç»„ä»¶åˆ—è¡¨ï¼Œå¦‚æœè¦å¯åŠ¨ Activity åˆ™å°†ç»„ä»¶å†™åœ¨ :activities ä¸‹ï¼Œ             1>>%~dp0start_android_component\component_list.txt
+    echo #   å¦‚æœè¦å¯åŠ¨ Service åˆ™å†™åœ¨ :services ä¸‹ï¼Œä¾‹å¦‚ï¼š                                       1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
-    echo #   # ±íÊ¾ÒªÆô¶¯ com.android.xxx/.MainActivity Õâ¸ö Activity                            1>>%~dp0start_android_component\component_list.txt
+    echo #   # è¡¨ç¤ºè¦å¯åŠ¨ com.android.xxx/.MainActivity è¿™ä¸ª Activity                            1>>%~dp0start_android_component\component_list.txt
     echo #   :activities                                                                        1>>%~dp0start_android_component\component_list.txt
     echo #   com.android.xxx/.MainActivity                                                      1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
-    echo #   # ±íÊ¾ÒªÆô¶¯ com.android.xxx/.SomeService Õâ¸ö Service                              1>>%~dp0start_android_component\component_list.txt
+    echo #   # è¡¨ç¤ºè¦å¯åŠ¨ com.android.xxx/.SomeService è¿™ä¸ª Service                              1>>%~dp0start_android_component\component_list.txt
     echo #   :services                                                                          1>>%~dp0start_android_component\component_list.txt
     echo #   com.android.xxx/.SomeService                                                       1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
-    echo # ×¢£ºcom.android.xxx ÊÇ°üÃû£¬.MainActivity ºÍ .SomeService Ê¡ÂÔ°üÃûºóµÄ¾ßÌåµÄ°²×¿×é¼ş     1>>%~dp0start_android_component\component_list.txt
+    echo # æ³¨ï¼šcom.android.xxx æ˜¯åŒ…åï¼Œ.MainActivity å’Œ .SomeService çœç•¥åŒ…ååçš„å…·ä½“çš„å®‰å“ç»„ä»¶     1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
-    echo # 2¡¢ÕâÕâÀïÀïÃæÅäÖÃµÄ°²×¿×é¼ş½«±»°²×¿µÄ am ÃüÁîµ÷ÓÃ                                        1>>%~dp0start_android_component\component_list.txt
-    echo #   Activity µÄµ÷ÓÃ¸ñÊ½ÈçÏÂ£º                                                            1>>%~dp0start_android_component\component_list.txt
+    echo # 2ã€è¿™è¿™é‡Œé‡Œé¢é…ç½®çš„å®‰å“ç»„ä»¶å°†è¢«å®‰å“çš„ am å‘½ä»¤è°ƒç”¨                                        1>>%~dp0start_android_component\component_list.txt
+    echo #   Activity çš„è°ƒç”¨æ ¼å¼å¦‚ä¸‹ï¼š                                                            1>>%~dp0start_android_component\component_list.txt
     echo #       am  start  -n  com.android.xxx/.MainActivity                                   1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
-    echo #   Service µÄµ÷ÓÃ¸ñÊ½ÈçÏÂ£º                                                             1>>%~dp0start_android_component\component_list.txt
+    echo #   Service çš„è°ƒç”¨æ ¼å¼å¦‚ä¸‹ï¼š                                                             1>>%~dp0start_android_component\component_list.txt
     echo #       am  startservice  -n  com.android.xxx/.SomeService                             1>>%~dp0start_android_component\component_list.txt
     echo #                                                                                      1>>%~dp0start_android_component\component_list.txt
     echo ###################################################################################### 1>>%~dp0start_android_component\component_list.txt
@@ -102,27 +103,27 @@ goto eof
 	set %~1=true
 goto eof
 
-@rem ´´½¨ĞÂµÄ config.txt ÎÄ¼ş
+@rem åˆ›å»ºæ–°çš„ config.txt æ–‡ä»¶
 @rem 
-@rem return boolean true ±íÊ¾³É¹¦´´½¨ÎÄ¼ş£¬false ±íÊ¾´´½¨ÎÄ¼şÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸåˆ›å»ºæ–‡ä»¶ï¼Œfalse è¡¨ç¤ºåˆ›å»ºæ–‡ä»¶å¤±è´¥
 :createNewConfigFile
-    echo # ÊÇ·ñÏÈÆô¶¯·şÎñ¡£true ÎªÏÈÆô¶¯·şÎñ£¬false ÎªÏÈÆô¶¯ activity £¬Ä¬ÈÏÎª true 1>>%~dp0start_android_component\config.txt
+    echo # æ˜¯å¦å…ˆå¯åŠ¨æœåŠ¡ã€‚true ä¸ºå…ˆå¯åŠ¨æœåŠ¡ï¼Œfalse ä¸ºå…ˆå¯åŠ¨ activity ï¼Œé»˜è®¤ä¸º true 1>>%~dp0start_android_component\config.txt
     echo isRunServiceFirst=true 1>>%~dp0start_android_component\config.txt
     echo.>>%~dp0start_android_component\config.txt
-    echo #µÈ´ı Activity ºÍ Service Æô¶¯µÄÊ±¼ä£¬µÈ´ı³¬Ê±Ö®ºóÔÙ¼ÌĞøÖ´ĞĞ½Å±¾£¬Ê±¼äµ¥Î»ÎªÃë,Ä¬ÈÏÎª 2 Ãë 1>>%~dp0start_android_component\config.txt
+    echo #ç­‰å¾… Activity å’Œ Service å¯åŠ¨çš„æ—¶é—´ï¼Œç­‰å¾…è¶…æ—¶ä¹‹åå†ç»§ç»­æ‰§è¡Œè„šæœ¬ï¼Œæ—¶é—´å•ä½ä¸ºç§’,é»˜è®¤ä¸º 2 ç§’ 1>>%~dp0start_android_component\config.txt
     echo waitForSecond=2 1>>%~dp0start_android_component\config.txt
 	set %~1=true
 goto eof
 
-@rem ½âÎö .\start_android_component\config.txt ÎÄ¼ş
+@rem è§£æ .\start_android_component\config.txt æ–‡ä»¶
 @rem
-@rem return boolean true ±íÊ¾³É¹¦½âÎö£¬false ±íÊ¾½âÎöÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸè§£æï¼Œfalse è¡¨ç¤ºè§£æå¤±è´¥
 :init_config
-    echo ÕıÔÚ½âÎö config.txt 
+    echo æ­£åœ¨è§£æ config.txt 
     set result=false
     for /f "eol=# tokens=1,2 delims== " %%l in (%~dp0start_android_component\config.txt) do (
-        @rem ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼şµÄÄÚÈİ
-        echo ÕÒµ½ÅäÖÃÏî£º%%~l£¬ÅäÖÃ½á¹û£º%%~l = %%~m
+        @rem å¼€å§‹è¯»å–é…ç½®æ–‡ä»¶çš„å†…å®¹
+        echo æ‰¾åˆ°é…ç½®é¡¹ï¼š%%~lï¼Œé…ç½®ç»“æœï¼š%%~l = %%~m
         if "%%~l"=="isRunServiceFirst" set start_android_component_isRunServiceFirst=%%~m
         if "%%~l"=="waitForSecond" set start_android_component_waitForSecond=%%~m
         set result=true
@@ -130,39 +131,39 @@ goto eof
     set %~1=!result!
 goto eof
 
-@rem ½âÎö .\start_android_component\component_list.txt ÎÄ¼ş
+@rem è§£æ .\start_android_component\component_list.txt æ–‡ä»¶
 @rem
-@rem return boolean true ±íÊ¾³É¹¦½âÎö£¬false ±íÊ¾½âÎöÊ§°Ü
+@rem return boolean true è¡¨ç¤ºæˆåŠŸè§£æï¼Œfalse è¡¨ç¤ºè§£æå¤±è´¥
 :init_component_list
-    echo ÕıÔÚ½âÎö  .\start_android_component\component_list.txt
+    echo æ­£åœ¨è§£æ  .\start_android_component\component_list.txt
     set tmp_string_1=null
     set tmp_string_2=null
     set result=false
     for /f "eol=#" %%l in (%~dp0start_android_component\component_list.txt) do (
-        @rem ¿ªÊ¼¶ÁÈ¡ÅäÖÃÎÄ¼şµÄÄÚÈİ
+        @rem å¼€å§‹è¯»å–é…ç½®æ–‡ä»¶çš„å†…å®¹
         set tmp_string_1=%%~l
         set tmp_string_3=!tmp_string_1:~0,1!
         if "!tmp_string_3!"==":" (
-            @rem ±êÇ©ĞĞ
+            @rem æ ‡ç­¾è¡Œ
             set result=false
             set tmp_string_2=!tmp_string_1:~1!
-            echo ½âÎöµ½ÅäÖÃ±êÇ© !tmp_string_2!
+            echo è§£æåˆ°é…ç½®æ ‡ç­¾ !tmp_string_2!
             if "!tmp_string_2!"=="activities" set result=true
             if "!tmp_string_2!"=="services" set result=true
             if "!result!"=="false" (
                 echo .
-                echo ½âÎöµ½´íÎóµÄÅäÖÃ±êÇ© !tmp_string_1!
-                echo Çë¼ì²éÅäÖÃÎÄ¼ş .\start_android_component\component_list.txt
+                echo è§£æåˆ°é”™è¯¯çš„é…ç½®æ ‡ç­¾ !tmp_string_1!
+                echo è¯·æ£€æŸ¥é…ç½®æ–‡ä»¶ .\start_android_component\component_list.txt
                 echo .
-                echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                echo è„šæœ¬å°†åœæ­¢è§£æé…ç½®æ–‡ä»¶å¹¶é€€å‡º
                 goto init_component_list_1
             )
         ) else (
-            @rem ÅäÖÃĞĞ
+            @rem é…ç½®è¡Œ
             if "!tmp_string_1!" neq "" (
                 if "!tmp_string_2!" neq "null" (
                     if "!tmp_string_2!"=="activities" (
-                        @rem ÒªÆô¶¯µÄÊÇ activity
+                        @rem è¦å¯åŠ¨çš„æ˜¯ activity
                         if "!start_android_component_activities_list!" neq "null" (
                             set start_android_component_activities_list=!start_android_component_activities_list!,"!tmp_string_1!"
                         ) else (
@@ -170,7 +171,7 @@ goto eof
                         )
                     )
                     if "!tmp_string_2!"=="services" (
-                        @rem ÒªÆô¶¯µÄÊÇ service
+                        @rem è¦å¯åŠ¨çš„æ˜¯ service
                         if "!start_android_component_services_list!" neq "null" (
                             set start_android_component_services_list=!start_android_component_services_list!,"!tmp_string_1!"
                         ) else (
@@ -180,8 +181,8 @@ goto eof
                     set result=true
                 ) else (
                     set result=false
-                    echo ¼ì²âµ½ !tmp_string_2! Î´ÅäÖÃÔÚ activities »ò services ±êÇ©ÏÂ£¬
-                    echo ½Å±¾½«Í£Ö¹½âÎöÅäÖÃÎÄ¼ş²¢ÍË³ö
+                    echo æ£€æµ‹åˆ° !tmp_string_2! æœªé…ç½®åœ¨ activities æˆ– services æ ‡ç­¾ä¸‹ï¼Œ
+                    echo è„šæœ¬å°†åœæ­¢è§£æé…ç½®æ–‡ä»¶å¹¶é€€å‡º
                     goto init_component_list_1
                 )
             )
@@ -191,9 +192,9 @@ goto eof
     set %~1=!result!
 goto eof
 
-@rem Æô¶¯ÅäÖÃµÄ activity
+@rem å¯åŠ¨é…ç½®çš„ activity
 @rem
-@rem param_3 ´«ÊäºÅ
+@rem param_3 ä¼ è¾“å·
 @rem return void
 :startActivity
     if "!start_android_component_activities_list!" neq "null" (
@@ -204,9 +205,9 @@ goto eof
     )
 goto eof
 
-@rem Æô¶¯ÅäÖÃµÄ service
+@rem å¯åŠ¨é…ç½®çš„ service
 @rem
-@rem param_3 ´«ÊäºÅ
+@rem param_3 ä¼ è¾“å·
 @rem return void
 :startService
     if "!start_android_component_services_list!" neq "null" (
